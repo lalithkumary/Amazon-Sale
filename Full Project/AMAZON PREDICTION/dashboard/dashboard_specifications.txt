@@ -1,0 +1,62 @@
+VISUALIZATION DASHBOARD SPECIFICATIONS
+
+Project: Amazon Sales Analysis & Prediction Application
+Directory: /dashboard/
+
+This document outlines the design specifications for the three distinct Tableau dashboards implemented for the project. These visualizations are connected directly to the cleaned CSV datasets residing in the 'data/' folder.
+
+1. DASHBOARD 1: EXECUTIVE SALES SUMMARY (Strategic View)
+   Target Audience: Business Owners / Executives
+   Data Source: `amazon_sales_cleaned.csv` (Dress Data)
+   
+   A. KPI Cards (Top Row)
+      - Total Revenue: Sum of 'Amount' across all regions.
+      - Average Rating: Average of 'Rating' (0-5 scale).
+      - Top State: The 'Ship-State' with the highest revenue.
+      - Total Orders: Distinct count of order IDs.
+
+   B. Geographic Performance Map
+      - Visualization: Filled Map of India.
+      - Dimension: 'Ship-State' (Maharashtra, Delhi, etc.).
+      - Metric: Color gradient based on 'Amount'. Darker blue indicates higher sales.
+      - Insight: Quickly identifies key revenue-driving regions.
+
+2. DASHBOARD 2: PREDICTIVE SALES TRENDS (Analytical View)
+   Target Audience: Sales Analysts
+   Data Source: `electronics_cleaned.csv` (Electronics Data)
+
+   A. Sales Trend Line
+      - Visualization: Dual-Axis Line Chart.
+      - X-Axis: 'Year' and 'Month'.
+      - Y-Axis 1: Actual 'Sales Amount' (Historical).
+      - Y-Axis 2: Predicted Sales (Dotted Line from ML Model).
+      - Insight: Compares actual vs. predicted performance to validate model accuracy.
+
+   B. Category Distribution
+      - Visualization: Donut Chart.
+      - Dimension: 'Category' (Mobiles, Computers, etc.).
+      - Metric: Percentage of sales contribution.
+      - Interactivity: Clicking a slice filters the Trend Line.
+
+3. DASHBOARD 3: INVENTORY & PRICING INSIGHTS (Operational View)
+   Target Audience: Inventory Managers
+   Data Source: `grocery_sales_data_cleaned.csv` (Grocery Data)
+
+   A. Top 10 High-Velocity Products
+      - Visualization: Horizontal Bar Chart or Text Table.
+      - Metric: 'Sales Quantity' (Descending).
+      - columns: Item Name, Price, Quantity.
+      - Insight: Highlights items that need frequent restocking.
+
+   B. Date-Key Analysis
+      - Visualization: Heatmap Table.
+      - Rows: 'DateKey'.
+      - Columns: 'Item'.
+      - Color: 'Price' fluctuations.
+
+TECHNICAL IMPLEMENTATION DETAILS
+- Data Logic: Data Blending is used on the 'Year' field to allow cross-dashboard filtering.
+- Interactivity:
+  - Product Filter: Dropdown [Dress, Electronics, Grocery] switches the dashboard view.
+  - Time Slider: Filters all charts to specific years (2022-2024).
+- Integration: Dashboards are exported as HTML or images and embedded into the Flask templates (`updated_diagrams_visualization.html`) for seamless user access.

@@ -1,0 +1,92 @@
+5. SYSTEM DESIGN AND DIAGRAMS
+The System Design phase translates the requirements into a blueprint for constructing the Amazon Sales Analysis & Prediction Application. This section details the architectural design, data flow, and structural components of the system.
+
+**VISUALIZATION NOTE:** For the visual representation of these diagrams (images), please open the file `5_Project_Diagrams.html` in your web browser. That file contains the rendered ER, DFD, Architecture, Use Case, and Class diagrams.
+
+5.1 Entity-Relationship (ER) Diagram
+Description:
+The ER Diagram represents the logical structure of the data sources used in the system. Since the application relies on file-based datasets (CSVs) for the initial training phase, the "Entities" correspond to the schema of the cleaned datasets.
+
+Entities & Attributes:
+1.  **DRESS_SALES_DATA**:
+    *   **Category**: The type of dress (e.g., Kurta, Top).
+    *   **Size**: The size variant (S, M, L, XL).
+    *   **State**: The geographic region of the sale.
+    *   **Rating**: Customer review score (0-5).
+    *   **Amount**: (Target Variable) The total sales revenue.
+
+2.  **ELECTRONICS_SALES_DATA**:
+    *   **Category**: Product category (e.g., Mobiles, Computers).
+    *   **Year**: The fiscal year of the transaction.
+    *   **Month**: The month of the transaction.
+    *   **Sales Amount**: (Target Variable) The revenue generated.
+
+3.  **GROCERY_SALES_DATA**:
+    *   **Item**: Specific grocery item name.
+    *   **Quantity**: The volume/count sold.
+    *   **DateKey**: The specific date of the sale.
+    *   **Price**: (Target Variable) The predicted price point.
+
+Relationships:
+*   Users interact with these independent data entities through the Unified Web Interface.
+*   Data isolation ensures that logic for Dress sales does not interfere with Grocery pricing models.
+
+5.2 Data Flow Diagram (DFD)
+Description:
+The Data Flow Diagram illustrates how information moves through the system, from the initial user input to the final prediction display. It highlights the transformation of data via the Machine Learning models.
+
+Flow Steps (Execution Path):
+1.  **Input Collection**: The User selects parameters (e.g., "Size: M", "Year: 2023") on the HTML Web Interface.
+2.  **Request Transmission**: The browser sends these parameters as a JSON object via an AJAX POST request to the Flask Server (`app.py`).
+3.  **Preprocessing**: The backend receives the data and uses loaded `LabelEncoders` components to convert text (e.g., "M") into machine-readable integers.
+4.  **Inference**: The processed integer array is passed to the pre-loaded `RandomForestRegressor` model (`.pkl` file).
+5.  **Prediction**: The model calculates a numerical prediction (Sales Amount or Price).
+6.  **Response**: The Flask server formats this number into a JSON response (e.g., `{"prediction": 1200.50}`).
+7.  **Display**: The frontend JavaScript receives the response and dynamically updates the HTML to show the result to the User instantly.
+
+5.3 System Architecture Diagram
+Description:
+The System Architecture Diagram depicts the high-level structure of the application, following the Model-View-Controller (MVC) pattern.
+
+Layers:
+1.  **Presentation Layer (View)**:
+    *   **Components**: HTML5 Templates, CSS3 Stylesheets, JavaScript.
+    *   **Function**: Handles user interaction and visualizes data. Runs in the Client's Browser.
+
+2.  **Application Layer (Controller)**:
+    *   **Components**: Python Flask Web Server (`app.py`), Route Handlers.
+    *   **Function**: Manages application logic, routes URL requests, and orchestrates the flow of data between the user and the models.
+
+3.  **Data & Logic Layer (Model)**:
+    *   **Components**: Scikit-Learn Models (`.pkl`), Pandas DataFrames, CSV Data Files.
+    *   **Function**: Performs the core computations (predictions) and manages the storage/retrieval of historical training data.
+
+5.4 Use Case Diagram
+Description:
+The Use Case Diagram identifies the primary actors utilizing the system and the specific actions (use cases) they can perform to execute the project's functions.
+
+Actors:
+*   **Business Analyst / User**: The primary end-user who needs sales forecasts.
+
+Use Cases:
+1.  **Login**: User authenticates to access the system.
+2.  **Select Category**: User chooses between Dress, Electronics, or Grocery prediction modules.
+3.  **Input Parameters**: User provides specific variables (Size, Year, Item) required for the prediction.
+4.  **Generate Prediction**: The system computes and displays the forecasted value.
+5.  **View Analytics**: User views visual charts representing historical trends via the Dashboard.
+
+5.5 Class Diagram
+Description:
+The Class Diagram provides a conceptual view of the internal code structure, illustrating how the Python backend is organized to handle different prediction tasks.
+
+Classes / Modules:
+1.  **FlaskApplication**: The central controller class that runs the server.
+2.  **ModelManagers**: Logical groupings of code (`dress_predict`, `electronics_predict`) responsible for handling specific category models.
+3.  **ArtifactLoader**: Helper utilities (`joblib`, `pickle`) responsible for securely loading the serialized machine learning artifacts from the disk into memory.
+
+6. PROJECT EXECUTION SUMMARY
+To execute the project as described in these diagrams:
+1.  **Start the Server**: Run `python app.py` to initialize the **FlaskApplication** and load the **Artifacts** (Models).
+2.  **Access Interface**: Open the browser (Presentation Layer) and navigate to `http://localhost:5000`.
+3.  **Perform Use Cases**: Log in, select a category (e.g., Dress), input data (Data Flow), and click "Predict".
+4.  **Receive Output**: The system returns the predicted sales value, completing the execution cycle.

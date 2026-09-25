@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Amazon Sales Prediction - System Diagrams (A3)</title>
+    <!-- Use a reliable CDN with error handling fallback -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            if (typeof mermaid !== 'undefined') {
+                mermaid.initialize({
+                    startOnLoad: true,
+                    theme: 'default',
+                    flowchart: { curve: 'basis' },
+                    securityLevel: 'loose'
+                });
+            } else {
+                document.body.innerHTML = '<h1 style="color:red; text-align:center;">Error: Internet connection is required to load diagram libraries.</h1><p style="text-align:center;">Please ensure you are connected to the internet to view these diagrams.</p>' + document.body.innerHTML;
+            }
+        });
+    </script>
+    <style>
+        /* A3 Paper Size Configuration */
+        @page {
+            size: A3;
+            margin: 15mm;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: white;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            max-width: 297mm;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            text-transform: uppercase;
+            color: #2c3e50;
+            border-bottom: 3px solid #2c3e50;
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-left: 5px solid #2980b9;
+            color: #2980b9;
+            margin-top: 0;
+        }
+
+        .diagram-container {
+            border: 2px solid #333;
+            padding: 25px;
+            margin-bottom: 50px;
+            background-color: #fff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            page-break-inside: avoid;
+        }
+
+        .description {
+            font-size: 1.1em;
+            margin-bottom: 20px;
+            line-height: 1.5;
+            color: #555;
+            border-bottom: 1px dashed #ccc;
+            padding-bottom: 10px;
+        }
+
+        /* Enforce large visualization for A3 */
+        .mermaid {
+            display: flex;
+            justify-content: center;
+            min-height: 300px;
+        }
+
+        .code-fallback {
+            display: none;
+            background: #f4f4f4;
+            padding: 10px;
+            border: 1px solid #ddd;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+
+        @media print {
+            body {
+                width: 100%;
+                max-width: none;
+                padding: 0;
+            }
+
+            .diagram-container {
+                border: 1px solid #000;
+                box-shadow: none;
+                margin-bottom: 40px;
+                page-break-after: always;
+            }
+
+            h1 {
+                page-break-before: avoid;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Amazon Sales Analysis & Prediction - System Architecture (A3 Layout)</h1>
+
+    <div class="diagram-container">
+        <h2>1. ER Diagram (Entity Relationship)</h2>
+        <p class="description">Represents the schema structure of the three distinct sales datasets (Dress, Electronics,
+            Grocery).</p>
+        <div class="mermaid">
+            erDiagram
+            DRESS_DATA {
+            string Category
+            string Size
+            string State
+            string Year
+            float Amount
+            float Rating
+            }
+            ELECTRONICS_DATA {
+            string Category
+            int Year
+            int Month
+            float SalesAmount
+            }
+            GROCERY_DATA {
+            string Item
+            string Quantity
+            string DateKey
+            float Price
+            }
+            APP_USER {
+            string SessionID
+            string Role
+            }
+            APP_USER ||--o{ DRESS_DATA : "queries"
+            APP_USER ||--o{ ELECTRONICS_DATA : "queries"
+            APP_USER ||--o{ GROCERY_DATA : "queries"
+        </div>
+        <div class="code-fallback">
+            erDiagram
+            DRESS_DATA { string Category string Size string State string Year float Amount float Rating }
+            ELECTRONICS_DATA { string Category int Year int Month float SalesAmount }
+            GROCERY_DATA { string Item string Quantity string DateKey float Price }
+            APP_USER { string SessionID string Role }
+            APP_USER ||--o{ DRESS_DATA : "queries"
+            APP_USER ||--o{ ELECTRONICS_DATA : "queries"
+            APP_USER ||--o{ GROCERY_DATA : "queries"
+        </div>
+    </div>
+
+    <div class="diagram-container">
+        <h2>2. Data Flow Diagram (DFD - Level 1)</h2>
+        <p class="description">The complete lifecycle of a prediction request from User Input to Model Inference and
+            Response.</p>
+        <div class="mermaid">
+            flowchart LR
+            User((User)) -->|"1. Input"| UI[Web Interface]
+            UI -->|"2. JSON POST"| API[Flask API]
+
+            subgraph Backend
+            direction TB
+            API -->|"3. Extract"| Preproc[Preprocessing]
+            Preproc -->|"4. Load Encoders"| Art[Artifact Storage]
+            Preproc -->|"5. Transform"| Feat[Feature Vector]
+            Feat -->|"6. Predict"| Model[RandomForest Model]
+            end
+
+            Model -->|"7. Value"| API
+            API -->|"8. Response"| UI
+            UI -->|"9. Display"| User
+        </div>
+    </div>
+
+    <div class="diagram-container">
+        <h2>3. System Architecture Diagram</h2>
+        <p class="description">Detailed MVC architecture showing Presentation, Application, and Data Layers.</p>
+        <div class="mermaid">
+            graph TB
+            subgraph Presentation [Client Side]
+            Browser[Web Browser]
+            Templates[Jinja2 Templates]
+            style Browser fill:#e1f5fe
+            style Templates fill:#e1f5fe
+            end
+
+            subgraph Logic [Server Side]
+            Flask[Flask App]
+            Dress[Dress Logic]
+            Elec[Electronics Logic]
+            Groc[Grocery Logic]
+            style Flask fill:#fff9c4
+            end
+
+            subgraph ML [Machine Learning]
+            RF_D[Dress Model]
+            RF_E[Elec Model]
+            RF_G[Groc Model]
+            style RF_D fill:#ffccbc
+            end
+
+            subgraph Data [Persistence]
+            CSV[CSV Files]
+            PKL[Pickle Files]
+            style CSV fill:#e0e0e0
+            end
+
+            Browser --> Templates
+            Templates -- "POST" --> Flask
+            Flask --> Dress
+            Flask --> Elec
+            Flask --> Groc
+            Dress --> RF_D
+            Elec --> RF_E
+            Groc --> RF_G
+            RF_D -.-> PKL
+            PKL -.-> CSV
+        </div>
+    </div>
+
+    <div class="diagram-container">
+        <h2>4. Use Case Diagram</h2>
+        <p class="description">Interactions between Retail Analyst, Admin, and the System.</p>
+        <div class="mermaid">
+            usecaseDiagram
+            actor "Retail Analyst" as User
+            actor "System Admin" as Admin
+            package "Amazon Prediction" {
+            usecase "Log In" as UC1
+            usecase "Predict Dress" as UC2
+            usecase "Predict Electronics" as UC3
+            usecase "Predict Grocery" as UC4
+            usecase "View Analytics" as UC5
+            usecase "Update Models" as UC6
+            }
+            User --> UC1
+            UC1 --> UC2
+            UC1 --> UC3
+            UC1 --> UC4
+            UC1 --> UC5
+            Admin --> UC1
+            Admin --> UC6
+        </div>
+    </div>
+
+    <div class="diagram-container">
+        <h2>5. Class Diagram</h2>
+        <p class="description">Backend class structure implementation detail.</p>
+        <div class="mermaid">
+            classDiagram
+            class SalesApp {
+            +Flask app
+            +run()
+            }
+            class Predictor {
+            #model
+            +predict()
+            }
+            class DressPredictor {
+            +predict_sales()
+            }
+            class ElecPredictor {
+            +predict_rev()
+            }
+            class GrocPredictor {
+            +predict_price()
+            }
+            SalesApp *-- DressPredictor
+            SalesApp *-- ElecPredictor
+            SalesApp *-- GrocPredictor
+            Predictor <|-- ElecPredictor Predictor <|-- GrocPredictor </div>
+        </div>
+</body>
+
+</html>

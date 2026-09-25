@@ -1,0 +1,41 @@
+4. SYSTEM ANALYSIS
+The Amazon Sales Analysis & Prediction System is designed to streamline the retail forecasting process by providing a structured platform for data ingestion, model inference, and trend visualization. The system enables business stakeholders to input product variables, generate instant sales predictions, and analyze historical performance efficiently. This section analyzes the system's objectives, existing challenges, and the proposed solution to improve the decision-making process.
+
+A. Challenges in the Current System
+• Manual Forecasting Process – Sales predictions are often estimated using manual spreadsheets (`data/amazon_sales_cleaned.csv`) or intuition, leading to inaccuracies.
+• Lack of Centralized Intelligence – Sales data is scattered across multiple CSV files (Dress, Electronics, Grocery) and formats, making it difficult to derive unified insights.
+• Slow Decision Making – Retailers experience delays in pricing and inventory adjustments due to the time-consuming nature of manual data analysis.
+• Scalability Issues – Loading and filtering large datasets in Excel can lead to crashes and slow performance.
+• Difficulty in Trend Analysis – Accurately identifying non-linear patterns between variables like "Rating", "Size", and "Sales" requires complex computation not available in standard office tools.
+
+B. System Objectives
+The proposed Amazon Sales Analysis & Prediction Application aims to:
+• Provide automated forecasting, ensuring instant and accurate sales predictions based on historical data patterns.
+• Enable real-time interaction through a user-friendly Flask web interface (`app.py`), replacing static reports.
+• Enhance data accuracy through systematic cleaning pipelines implemented in the training scripts (`train_dress_model.py`, etc.).
+• Generate actionable insights for inventory planning and marketing strategies by predicting future sales trends.
+• Centralize predictive logic into a single responsive application that handles multiple product categories (Dress, Electronics, Grocery).
+
+C. Features of the Proposed System:
+• Interactive Web Interface – Users can access the system via browser to input product details (Size, Category, Year) using dynamic forms (`templates/dress.html`).
+• Multi-Category Support – Specialized Random Forest models (`models/electronics_model.pkl`, `models/grocery_best_model.pkl`) for distinct product lines.
+• Real-time Prediction Engine – Backend logic processes inputs and provides sub-second revenue forecasts via JSON APIs.
+• Data Visualization Integration – Tableau diagrams and internal dashboards visualize geographic and category-wise performance.
+• Secure & Scalable Backend – The Model-View-Controller (MVC) architecture ensures that data processing is strictly separated from the user interface.
+• Automated Data Processing – The system automatically handles missing values and encodes categorical features using saved encoders.
+
+4.1 Feasibility Analysis
+
+A. Technical Feasibility
+• The system is developed using Python, Flask (Backend), Scikit-Learn (Machine Learning), and Pandas (Data Processing).
+• Joblib and Pickle libraries are used for efficient model serialization and loading.
+• The system ensures compatibility with modern web browsers using HTML5, CSS3, and JavaScript, requiring no special client-side software.
+
+B. Operational Feasibility
+• The system is easy to use, requiring minimal to no technical training for business analysts or inventory managers.
+• A user-friendly, drop-down driven interface ensures smooth navigation and error-free data entry.
+
+C. Economic Feasibility
+• The web application reduces the operational costs associated with manual data entry and analysis time.
+• Low maintenance cost due to the use of robust, open-source technologies (Python ecosystem).
+• Increases productivity and profitability by enabling data-driven decisions that optimize stock levels and pricing strategies.

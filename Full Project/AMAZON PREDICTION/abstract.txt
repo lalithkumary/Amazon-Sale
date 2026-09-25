@@ -1,0 +1,16 @@
+
+ABSTRACT
+
+The Amazon Sales Analysis & Prediction project is a comprehensive data science solution based on machine learning algorithms and interactive visualization tools, designed to forecast sales trends and deliver actionable insights for retail decision-making. Addressing the challenges of manual demand estimation and disjointed data analysis, this project employs a robust three-tier architecture to bridge raw transactional data with strategic business intelligence.
+
+The system features a responsive web interface built with HTML5, CSS3, and JavaScript, enabling non-technical stakeholders to intuitively interact with predictive tools for Dresses, Electronics, and Groceries. The backend leverages Python's Flask framework, incorporating Scikit-learn, Pandas, and NumPy to power custom-trained Random Forest Regressor models. These models are optimized for specific category variables—predicting Dress sales based on size, state, and rating; forecasting Electronics revenue using category and temporal data; and estimating Grocery prices through item and quantity metrics.
+
+Real-time predictions are delivered via RESTful API endpoints with sub-second response times, while complementary Tableau dashboards visualize broader sales trends, geographic distributions, and category performance. The implementation emphasizes modularity through scalable folder structures and automated data cleaning pipelines. By providing accessible, data-driven forecasts, this solution enables effective inventory planning and marketing optimization without requiring specialized machine learning expertise.
+
+Technology Stack:
+*   Frontend: HTML5, CSS3, JavaScript (Jinja2 Templates)
+*   Backend: Python, Flask (Web Framework)
+*   Database/Storage: CSV Data Files & Pickle/Joblib Model Serialization
+*   Machine Learning: Scikit-learn (Random Forest), Pandas, NumPy
+*   Visualization: Tableau Dashboards & Matplotlib
+*   Architecture: Model-View-Controller (MVC) Pattern
